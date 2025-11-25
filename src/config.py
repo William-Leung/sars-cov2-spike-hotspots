@@ -6,6 +6,7 @@ UNALIGNED_DNA_FILE = "./out/spikes_dna.fasta"
 UNALIGNED_AA_FILE = "./out/spikes_aa.fasta"
 ALIGNED_AA_FILE = "./out/spikes_aa_aligned.fasta"
 ALIGNED_CODON_FILE = "./out/spikes_codon_aligned.fasta"
+PHYLOGENETIC_TREE_FILE = "./out/phylogenetic_tree.tree"
 
 # Got these numbers from https://www.ncbi.nlm.nih.gov/nuccore/NC_045512.2
 # Note that the website uses 1 based indexing but we have to convert it into 0 based indexing for Python.

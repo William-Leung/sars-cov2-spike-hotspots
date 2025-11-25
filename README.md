@@ -10,3 +10,7 @@ python3 extract_spikes.py
 mafft --auto --thread -1 out/spikes_aa.fasta > out/spikes_aa_aligned.fasta 
 \# Converts the AA back to DNA because SLAC uses DNA as input
 python3 thread_dna.py
+\# Create phylogenetic tree using FastTree 
+python3 create_tree.py
+
+You need to install FastTree
