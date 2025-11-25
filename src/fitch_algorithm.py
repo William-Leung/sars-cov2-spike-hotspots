@@ -233,7 +233,7 @@ def build_newick_tree(node):
 
 def output_results(root, output_dir=None):
     """
-    Output SLAC input files (tree + sequences for Suzuki & Gojobori algorithm).
+    Output input files (tree + sequences for Suzuki & Gojobori algorithm).
     
     Based on Suzuki & Gojobori (1999) method for detecting positive selection.
     """
@@ -261,12 +261,12 @@ def output_results(root, output_dir=None):
     collect_all_sequences(root)
     
     if all_records:
-        slac_sequences_file = os.path.join(output_dir, "slac_input_sequences.fasta")
-        SeqIO.write(all_records, slac_sequences_file, "fasta")
+        ancestral_sequences_file = os.path.join(output_dir, "ancestral_sequences.fasta")
+        SeqIO.write(all_records, ancestral_sequences_file, "fasta")
         
         newick_tree = build_newick_tree(root)
-        slac_tree_file = os.path.join(output_dir, "slac_input_tree.tree")
-        with open(slac_tree_file, "w") as f:
+        ancestral_tree_file = os.path.join(output_dir, "ancestral_tree.tree")
+        with open(ancestral_tree_file, "w") as f:
             f.write(newick_tree + ";\n")
     else:
         print("Warning: No sequences to save")
@@ -275,7 +275,7 @@ def output_results(root, output_dir=None):
 def run_fitch_algorithm(sequence_file=None, tree_file=None):
     """
     Main function to run the Fitch algorithm.
-    Uses codon-aligned sequences (required for SLAC dN/dS calculation).
+    Uses codon-aligned sequences (required for dN/dS calculation).
     
     Args:
         sequence_file: Path to aligned codon sequence file (default: from config)

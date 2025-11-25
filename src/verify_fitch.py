@@ -190,8 +190,8 @@ def main():
     print("\nFitch Algorithm Output Verification\n")
     
     output_dir = os.path.dirname(config.ALIGNED_CODON_FILE) or "./out"
-    tree_file = os.path.join(output_dir, "slac_input_tree.tree")
-    sequence_file = os.path.join(output_dir, "slac_input_sequences.fasta")
+    tree_file = os.path.join(output_dir, "ancestral_tree.tree")
+    sequence_file = os.path.join(output_dir, "ancestral_sequences.fasta")
     
     if not os.path.exists(tree_file):
         print(f"✗ Tree file not found: {tree_file}")
