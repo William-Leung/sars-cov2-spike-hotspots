@@ -2,39 +2,13 @@
 from Bio import SeqIO
 from Bio.Align import PairwiseAligner
 from Bio.SeqRecord import SeqRecord
-
-RAW_SEQUENCES = "../data/raw_sequences.fasta"
-WUHAN_REFERENCE = "../data/wuhan_reference.fasta"
-WUHAN_SPIKE_REFERENCE = "../data/wuhan_spike_reference.fasta"
-ERROR_LOG = "extraction_errors.txt"
-DNA_OUTPUT_FILE = "./out/spikes_dna.fasta"
-AA_OUTPUT_FILE = "./out/spikes_aa.fasta"
-
-# Got these numbers from https://www.ncbi.nlm.nih.gov/nuccore/NC_045512.2
-# Note that the website uses 1 based indexing but we have to convert it into 0 based indexing for Python.
-REFERENCE_SPIKE_START_INDEX = 21562
-REFERENCE_SPIKE_END_INDEX = 25384
-SPIKE_EXPECTED_LENGTH = 3822
-LENGTH_TOLERANCE = 50
-
-def extract_spike_from_reference():
-    # Extracts just the spike part of the wuhan-hu-1 reference
-    record = SeqIO.read(WUHAN_REFERENCE, "fasta")
-
-    spike_sequence = record.seq[REFERENCE_SPIKE_START_INDEX:REFERENCE_SPIKE_END_INDEX]
-    sequence_length = len(spike_sequence)
-    assert sequence_length == SPIKE_EXPECTED_LENGTH, "Length mismatch with SARS-CoV-2 spike sequence."
-
-    with open(WUHAN_SPIKE_REFERENCE, "w") as output:
-        output.write(f">Wuhan_Hu_1_Spike_Gene\n{spike_sequence}")
-
-    print(f"SARS-CoV-2 Spike Sequence saved to {WUHAN_SPIKE_REFERENCE}")
+import config
 
 def is_valid_spike(record):
     sequence_length = len(record)
 
     # Check that the length is within a threshold
-    if not (SPIKE_EXPECTED_LENGTH - LENGTH_TOLERANCE <= sequence_length <= SPIKE_EXPECTED_LENGTH + LENGTH_TOLERANCE):
+    if not (config.SPIKE_EXPECTED_LENGTH - config.LENGTH_TOLERANCE <= sequence_length <= config.SPIKE_EXPECTED_LENGTH + config.LENGTH_TOLERANCE):
         return False, f"Invalid length {sequence_length}"
     
     # Check that the stop and start codons are correct
@@ -67,7 +41,7 @@ def create_aligner():
     return aligner
 
 def extract_spike_from_raw_sequences():
-    ref_spike = SeqIO.read(WUHAN_SPIKE_REFERENCE, "fasta")
+    ref_spike = SeqIO.read(config.WUHAN_SPIKE_REFERENCE, "fasta")
     aligner = create_aligner()
     valid_count = 0
     total_count = 0
@@ -75,12 +49,10 @@ def extract_spike_from_raw_sequences():
     extracted_dna = []
     extracted_aa = []
 
-    print(f"Processing genomes from {RAW_SEQUENCES}...")
+    print(f"Processing genomes from {config.RAW_SEQUENCES}...")
 
-    with open(ERROR_LOG, "w") as err_handle:
-        for genome in SeqIO.parse(RAW_SEQUENCES, "fasta"):
-            if total_count == 10: # TODO early stop for testing remove this later
-                break
+    with open(config.ERROR_LOG, "w") as err_handle:
+        for genome in SeqIO.parse(config.RAW_SEQUENCES, "fasta"):
             total_count += 1
             if total_count % 50 == 0:
                 print(f"Processed {total_count} genomes...")
@@ -121,13 +93,12 @@ def extract_spike_from_raw_sequences():
                 err_handle.write(f"{genome.id}: {message}\n")
 
     if extracted_dna:
-        SeqIO.write(extracted_dna, DNA_OUTPUT_FILE, "fasta")
-        SeqIO.write(extracted_aa, AA_OUTPUT_FILE, "fasta")
+        SeqIO.write(extracted_dna, config.DNA_OUTPUT_FILE, "fasta")
+        SeqIO.write(extracted_aa, config.AA_OUTPUT_FILE, "fasta")
         print(f"\nDone! Extracted {valid_count}/{total_count} sequences.")
-        print(f"DNA saved to: {DNA_OUTPUT_FILE}")
-        print(f"Proteins saved to: {AA_OUTPUT_FILE}")
+        print(f"DNA saved to: {config.DNA_OUTPUT_FILE}")
+        print(f"Proteins saved to: {config.AA_OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
-    extract_spike_from_reference()
     extract_spike_from_raw_sequences()
