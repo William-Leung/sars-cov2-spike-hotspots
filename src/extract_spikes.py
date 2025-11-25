@@ -1,4 +1,3 @@
-# cd src && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
 from Bio import SeqIO
 from Bio.Align import PairwiseAligner
 from Bio.SeqRecord import SeqRecord
@@ -41,7 +40,7 @@ def create_aligner():
     return aligner
 
 def extract_spike_from_raw_sequences():
-    ref_spike = SeqIO.read(config.WUHAN_SPIKE_REFERENCE, "fasta")
+    ref_spike = SeqIO.read(config.WUHAN_SPIKE_REFERENCE_FILE, "fasta")
     aligner = create_aligner()
     valid_count = 0
     total_count = 0
@@ -49,10 +48,10 @@ def extract_spike_from_raw_sequences():
     extracted_dna = []
     extracted_aa = []
 
-    print(f"Processing genomes from {config.RAW_SEQUENCES}...")
+    print(f"Processing genomes from {config.RAW_SEQUENCES_FILE}...")
 
-    with open(config.ERROR_LOG, "w") as err_handle:
-        for genome in SeqIO.parse(config.RAW_SEQUENCES, "fasta"):
+    with open(config.ERROR_LOG_FILE, "w") as err_handle:
+        for genome in SeqIO.parse(config.RAW_SEQUENCES_FILE, "fasta"):
             total_count += 1
             if total_count % 50 == 0:
                 print(f"Processed {total_count} genomes...")
@@ -93,11 +92,11 @@ def extract_spike_from_raw_sequences():
                 err_handle.write(f"{genome.id}: {message}\n")
 
     if extracted_dna:
-        SeqIO.write(extracted_dna, config.DNA_OUTPUT_FILE, "fasta")
-        SeqIO.write(extracted_aa, config.AA_OUTPUT_FILE, "fasta")
+        SeqIO.write(extracted_dna, config.UNALIGNED_DNA_FILE, "fasta")
+        SeqIO.write(extracted_aa, config.UNALIGNED_AA_FILE, "fasta")
         print(f"\nDone! Extracted {valid_count}/{total_count} sequences.")
-        print(f"DNA saved to: {config.DNA_OUTPUT_FILE}")
-        print(f"Proteins saved to: {config.AA_OUTPUT_FILE}")
+        print(f"DNA saved to: {config.UNALIGNED_DNA_FILE}")
+        print(f"Proteins saved to: {config.UNALIGNED_AA_FILE}")
 
 
 if __name__ == "__main__":

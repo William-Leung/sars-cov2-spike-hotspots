@@ -7,16 +7,16 @@ num_sequences = 200
 
 def extract_spike_from_reference():
     # Extracts just the spike part of the wuhan-hu-1 reference
-    record = SeqIO.read(config.WUHAN_REFERENCE, "fasta")
+    record = SeqIO.read(config.WUHAN_REFERENCE_FILE, "fasta")
 
     spike_sequence = record.seq[config.REFERENCE_SPIKE_START_INDEX:config.REFERENCE_SPIKE_END_INDEX]
     sequence_length = len(spike_sequence)
     assert sequence_length == config.SPIKE_EXPECTED_LENGTH, "Length mismatch with SARS-CoV-2 spike sequence."
 
-    with open(config.WUHAN_SPIKE_REFERENCE, "w") as output:
+    with open(config.WUHAN_SPIKE_REFERENCE_FILE, "w") as output:
         output.write(f">Wuhan_Hu_1_Spike_Gene\n{spike_sequence}")
 
-    print(f"SARS-CoV-2 Spike Sequence saved to {config.WUHAN_SPIKE_REFERENCE}")
+    print(f"SARS-CoV-2 Spike Sequence saved to {config.WUHAN_SPIKE_REFERENCE_FILE}")
 
 def extract_raw_sequences():
     # Searches for complete SARS-CoV-2 genomes from USA 
