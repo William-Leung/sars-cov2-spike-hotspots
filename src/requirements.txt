@@ -1,3 +1,4 @@
 Bio
 kcalign
 biopython
+matplotlib
