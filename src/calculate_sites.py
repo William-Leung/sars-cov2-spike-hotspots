@@ -8,7 +8,7 @@ stop_codons = set(codon_table.stop_codons)
 bases = ["A", "C", "G", "T"]
 
 """
-Given a codon, returns a pair (x, y) where x is the nnumber of synonymous
+Given a codon, returns a pair (x, y) where x is the number of synonymous
 sites and y is the number of nonsynonymous sites.
 """
 def count_sites(codon):
