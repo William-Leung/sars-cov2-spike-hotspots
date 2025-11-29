@@ -5,7 +5,7 @@ ERROR_LOG_FILE = "./out/extraction_errors.txt"
 UNALIGNED_DNA_FILE = "./out/spikes_dna.fasta"
 UNALIGNED_AA_FILE = "./out/spikes_aa.fasta"
 ALIGNED_AA_FILE = "./out/spikes_aa_aligned.fasta"
-ALIGNED_CODON_FILE = "./out/spikes_codon_aligned.fasta"
+ALIGNED_CODON_FILE = "./codon_align.fasta"
 PHYLOGENETIC_TREE_FILE = "./out/phylogenetic_tree.tree"
 
 # Got these numbers from https://www.ncbi.nlm.nih.gov/nuccore/NC_045512.2
