@@ -8,7 +8,7 @@ import os
 class FitchNode:
     """Represents a node in the tree with Fitch algorithm state information."""
     
-    def __init__(self, name=None, is_leaf=False):
+    def __init__(self, name=None, is_leaf=False, branch_length=0.0):
         self.name = name
         self.is_leaf = is_leaf
         self.children = []
@@ -17,6 +17,7 @@ class FitchNode:
         self.assigned_states = {}
         self.parsimony_scores = {}
         self.sequence = None
+        self.branch_length = branch_length
 
 
 def parse_tree_with_sequences(tree_file, sequence_file):
@@ -47,8 +48,9 @@ def parse_tree_with_sequences(tree_file, sequence_file):
         """Convert BioPython tree node to FitchNode."""
         is_leaf = bio_node.is_terminal()
         name = bio_node.name if bio_node.name else None
+        branch_length = bio_node.branch_length if bio_node.branch_length is not None else 0.0
         
-        fitch_node = FitchNode(name=name, is_leaf=is_leaf)
+        fitch_node = FitchNode(name=name, is_leaf=is_leaf, branch_length=branch_length)
         fitch_node.parent = parent
         
         if is_leaf:
@@ -215,10 +217,12 @@ def build_newick_tree(node):
     Build a Newick format tree string from the FitchNode tree structure.
     Includes all nodes (observed and ancestral) with their names.
     """
+    length = node.branch_length
+    
     if node.is_leaf:
         name = node.name if node.name else f"Leaf_{id(node)}"
         name = name.replace(":", "_").replace(" ", "_").replace(",", "_")
-        return name
+        return f"{name}:{length}"
     else:
         child_strings = []
         for child in node.children:
@@ -227,7 +231,7 @@ def build_newick_tree(node):
         name = node.name if node.name else f"Ancestor_{id(node)}"
         name = name.replace(":", "_").replace(" ", "_").replace(",", "_")
         
-        newick = f"({','.join(child_strings)}){name}"
+        newick = f"({','.join(child_strings)}){name}:{length}"
         return newick
 
 

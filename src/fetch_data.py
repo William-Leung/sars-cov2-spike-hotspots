@@ -3,7 +3,7 @@ from Bio import Entrez, SeqIO
 import config
 
 Entrez.email = "wcl53@cornell.edu"
-num_sequences = 200
+num_sequences = 1000
 
 def extract_spike_from_reference():
     # Extracts just the spike part of the wuhan-hu-1 reference
