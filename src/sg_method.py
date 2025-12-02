@@ -66,16 +66,18 @@ for i in range(0, sequence_length, 3):
         n_c[i] += 1
 
 significance = 0.05 # 2-sided significance test
-for i in range(0, sequence_length, 3):
-  if s_t[i] + n_t[i] == 0:
-    continue
-  
-  prob_syn = s_t[i] / (s_t[i] + n_t[i])
-  p = binom.cdf(s_c[i], s_c[i] + n_c[i], prob_syn)
-  if p <= significance / 2:
-    print(f"Positive selection, position {i}-{i+2}: s_c={s_c[i]}, n_c={n_c[i]}, s_t={s_t[i]:.2f}, n_t={n_t[i]:.2f}, p={p:.6f}")
 
-  prob_nonsyn = n_t[i] / (s_t[i] + n_t[i])
-  p = binom.cdf(n_c[i], s_c[i] + n_c[i], prob_nonsyn)
-  if p <= significance / 2:
-    print(f"Negative selection, position {i}-{i+2}: s_c={s_c[i]}, n_c={n_c[i]}, s_t={s_t[i]:.2f}, n_t={n_t[i]:.2f}, p={p:.6f}")
+with open("out/sg_results.txt", "w") as output_file:
+  for i in range(0, sequence_length, 3):
+    if s_t[i] + n_t[i] == 0:
+      continue
+    
+    prob_syn = s_t[i] / (s_t[i] + n_t[i])
+    p = binom.cdf(s_c[i], s_c[i] + n_c[i], prob_syn)
+    if p <= significance / 2:
+      output_file.write(f"Positive selection, position {i}-{i+2}: s_c={s_c[i]}, n_c={n_c[i]}, s_t={s_t[i]:.2f}, n_t={n_t[i]:.2f}, p={p:.6f}\n")
+
+    prob_nonsyn = n_t[i] / (s_t[i] + n_t[i])
+    p = binom.cdf(n_c[i], s_c[i] + n_c[i], prob_nonsyn)
+    if p <= significance / 2:
+      output_file.write(f"Negative selection, position {i}-{i+2}: s_c={s_c[i]}, n_c={n_c[i]}, s_t={s_t[i]:.2f}, n_t={n_t[i]:.2f}, p={p:.6f}\n")
