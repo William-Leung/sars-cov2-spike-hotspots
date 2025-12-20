@@ -2,4 +2,6 @@ Bio
 kcalign
 biopython
 matplotlib
+matplotlib-venn
+pandas
 scipy
