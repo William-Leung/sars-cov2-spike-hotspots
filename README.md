@@ -2,7 +2,7 @@
 
 ### Workflow
 
-First, enter the src directory with `cd src`. The first 5 steps are preparation and pre-processing. However, the necessary processed data is already in the repository (if you don't want to re-run it yourself, you can skip to the last 2 steps with the SG and SLAC methods).
+First, enter the src directory with `cd src`. The first 5 steps are preparation and pre-processing. However, the necessary processed data is already in the repository (if you don't want to re-run it yourself, you can skip to the last 2 steps with the SG and SLAC methods). The last 2 steps also don't require kc-align, FastTree, or kalign installation.
 
 ### Install requirements (if necessary)
 `python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`  
@@ -11,7 +11,7 @@ kc-align: https://github.com/davebx/kc-align
 FastTree: https://anaconda.org/bioconda/fasttree  
 kalign: https://github.com/TimoLassmann/kalign  
 
-### Fetch raw CoV-Sar-2 sequences and the spike section of the wuhan-hu-1 reference
+### Fetch raw SARS-CoV-2 sequences and the spike section of the wuhan-hu-1 reference
 `python3 fetch_data.py`
 
 ### Extract the spike sections from the raw sequences, align the amino acid sequences together, and convert them back to DNA.
@@ -24,8 +24,10 @@ kalign: https://github.com/TimoLassmann/kalign
 `python3 fitch_algorithm.py`
 
 ### Run SG Method to detect selective pressure
-`python3 sg_method.py`
+`python3 sg_method.py`  
+Results are written in out/sg_results.txt.
 
 ### Run SLAC to detect selective pressure
-`python3 slac_method.py`
+`python3 slac_method.py`  
+Results are printed in command line.
 
